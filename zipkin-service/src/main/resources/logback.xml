@@ -1,27 +1,28 @@
-<appender name="STASH"
-	class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-	<destination>192.168.99.100:5000</destination>
-
-	<encoder
-		class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
-		<providers>
-			<mdc />
-			<context />
-			<logLevel />
-			<loggerName />
-
-			<pattern>
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<appender name="STASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+		<destination>192.168.99.100:5000</destination>
+	
+		<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+			<providers>
+				<mdc />
+				<context />
+				<logLevel />
+				<loggerName />
+	
 				<pattern>
-					{
-					"serviceName": "account-service"
-					}
+					<pattern>
+						{
+						"serviceName": "account-service"
+						}
+					</pattern>
 				</pattern>
-			</pattern>
-
-			<threadName />
-			<message />
-			<logstashMarkers />
-			<stackTrace />
-		</providers>
-	</encoder>
-</appender>
+	
+				<threadName />
+				<message />
+				<logstashMarkers />
+				<stackTrace />
+			</providers>
+		</encoder>
+	</appender>
+</configuration>

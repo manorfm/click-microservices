@@ -1,5 +1,5 @@
 server:  
-  port: ${PORT:3001}
+  port: ${PORT:3000}
 
 spring:  
   application:
@@ -12,7 +12,7 @@ spring:
       ddl-auto: update
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.56.1/user
+    url: jdbc:mysql://localhost/user
     username: root
     password: root
   logging:
