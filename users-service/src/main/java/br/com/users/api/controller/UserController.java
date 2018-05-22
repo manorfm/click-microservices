@@ -1,0 +1,73 @@
+package br.com.users.api.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import br.com.commons.rest.services.AbstractController;
+import br.com.users.api.assembler.UserResourcesAssembler;
+import br.com.users.api.resources.UserResource;
+import br.com.users.domain.User;
+import br.com.users.domain.service.UserService;
+
+@RestController
+@RequestMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
+public class UserController extends AbstractController<UserResource> {
+
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private UserResourcesAssembler userAssembler;
+
+	@RequestMapping(value = "", method = RequestMethod.POST)
+	public ResponseEntity<?> save(@RequestBody UserResource resource) {
+		User user = userAssembler.convert(resource);
+		userService.save(user);
+
+		return responseCreated();
+	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<?> getUser(@PathVariable Long id) {
+		User user = userService.get(id);
+		UserResource resource = userAssembler.convert(user);
+		return response(resource, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "", method = RequestMethod.GET)
+	public ResponseEntity<?> getUsers() {
+		List<User> users = userService.findAll();
+		List<UserResource> resources = userAssembler.convert(users);
+
+		return response(resources, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+		userService.remove(id);
+		return responseOk();
+	}
+
+	@RequestMapping(value = "", method = RequestMethod.PUT)
+	public ResponseEntity<?> updateUser(@RequestBody UserResource resource) {
+		User user = userService.get(resource.getId());
+
+		user.setName(resource.getName());
+		user.setPassword(resource.getPassword());
+		userService.update(user);
+
+		UserResource newResource = userAssembler.convert(user);
+		return response(newResource, HttpStatus.OK);
+	}
+}
