@@ -70,6 +70,10 @@ public class ClickController extends AbstractController<ClickResource> {
 		try {
 			log.info(String.format("get click id: %d", id));
 			Click click = clickService.get(id);
+			if (click == null) {
+				log.warning(String.format("404 - Not found user id: %d", id));
+				return responseError(HttpStatus.NOT_FOUND);
+			}
 			User user = userController.getUser(click.getUserId());
 			ClickResource resource = clickResourcesAssembler.convert(click, user);
 			return responseOk(resource);

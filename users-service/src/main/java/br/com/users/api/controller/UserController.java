@@ -49,6 +49,9 @@ public class UserController extends AbstractController<UserResource> {
 	public ResponseEntity<?> getUser(@PathVariable Long id) {
 		log.info("Getting user id: " + id);
 		User user = userService.get(id);
+		if (user == null) {
+			return notFound(String.format("404 - Not found user id: %d", id));
+		}
 		UserResource resource = userAssembler.convert(user);
 		return response(resource, HttpStatus.OK);
 	}
@@ -68,15 +71,24 @@ public class UserController extends AbstractController<UserResource> {
 		return responseOk();
 	}
 
-	@RequestMapping(value = "", method = RequestMethod.PUT)
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<?> updateUser(@RequestBody UserResource resource) {
 		User user = userService.get(resource.getId());
-
+		
+		if (user == null) {
+			return notFound(String.format("404 - Not found user id: %d", resource.getId()));
+		}
+		
 		user.setName(resource.getName());
 		user.setPassword(resource.getPassword());
 		userService.update(user);
 
 		UserResource newResource = userAssembler.convert(user);
 		return response(newResource, HttpStatus.OK);
+	}
+	
+	private ResponseEntity<?> notFound(String warning) {
+		log.warning(warning);
+		return responseError(HttpStatus.NOT_FOUND);
 	}
 }

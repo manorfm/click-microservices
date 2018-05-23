@@ -28,7 +28,8 @@ ribbon:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8700/eureka/
+      defaultZone: ${DISCOVERY_URL:http://discovery-service:8700}/eureka/
+##defaultZone: http://localhost:8700/eureka/
     registerWithEureka: false
       
 server:

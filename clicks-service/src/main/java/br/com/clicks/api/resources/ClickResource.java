@@ -10,6 +10,7 @@ import lombok.ToString;
 @ToString
 public class ClickResource {
 
+	private Long id;
 	private Long userId;
 	private String timer;
 	private UserResource user;

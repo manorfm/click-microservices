@@ -25,6 +25,11 @@ public @Data class Click extends PersistenceObject {
 	
 	public Click() { }
 	
+	public Click(Long id, Long userId, LocalDateTime timer) {
+		this(userId, timer);
+		this.setId(id);
+	}
+	
 	public Click(Long userId, LocalDateTime timer) {
 		this.timer = timer;
 		this.userId = userId;
