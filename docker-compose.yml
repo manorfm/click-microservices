@@ -1,54 +1,71 @@
-version: '3'
+version: '3.5'
 services:
-  mysql:
+  mysql-users:
     image: mysql:latest
-    container_name: mysql
-    command: 
-      - mysql-entrypoint.sh
+    container_name: mysql-users
     ports:
       - 3306:3306
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=user
+  mysql-clicks:
+    image: mysql:latest
+    container_name: mysql-clicks
+    ports:
+      - 3307:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=click
   user-service:
     image: manorfm/user-service:latest
     container_name: user-service
-    build: ./users-service/Dockerfile
+    build:
+      context: ./users-service/
+      dockerfile: Dockerfile
     ports:
       - 3001:3001
     depends_on:
-      - gateway-service
-      - mysql
+      - mysql-users
   clicks-service:
     image: manorfm/clicks-service:latest
     container_name: clicks-service
-    build: ./clicks-service/Dockerfile
+    build:
+      context: ./clicks-service/ 
+      dockerfile: Dockerfile
     ports:
       - 3000:3000
     depends_on:
+      - mysql-clicks
       - user-service
   gateway-service:
     image: manorfm/gateway-service:latest
     container_name: gateway-service
-    build: ./gateway-service/Dockerfile
+    build:
+      context: ./gateway-service/ 
+      dockerfile: Dockerfile
     ports:
       - 80:80
     depends_on:
       - discovery-service
+      - clicks-service
   discovery-service:
     image: manorfm/discovery-service:latest
     container_name: discovery-service
-    build: ./discovery-service/Dockerfile
+    build:
+      context: ./discovery-service/ 
+      dockerfile: Dockerfile
     ports:
       - 8700:8700
   zipkin-service:
-    image: manorfm/discovery-service:latest
-    container_name: discovery-service
-    build: ./discovery-service/Dockerfile
+    image: manorfm/zipkin-service:latest
+    container_name: zipkin-service
+    build:
+      context: ./zipkin-service/ 
+      dockerfile: Dockerfile
     ports:
-      - 8700:8700
+      - 8701:8701
     depends_on:
-      - elasticsearch
+      - logstash
   elasticsearch:
     image: elasticsearch
     container_name: elasticsearch
@@ -68,8 +85,8 @@ services:
     image: logstash
     container_name: logstash
     ports:
-      - 5001:5000
+      - 5000:5000
     environment:
-      - 'input { tcp { port => 5001 codec => "json" } } output { elasticsearch { hosts => ["192.168.10.1"] index => "micro-%{serviceName}"} }'
+      - 'input { tcp { port => 5000 codec => "json" } } output { elasticsearch { hosts => ["172.17.0.3"] index => "micro-%{serviceName}"} }'
     depends_on:
       - kibana

@@ -1,4 +1,4 @@
-package br.com.clicks.rest.domain.clock;
+package br.com.clicks.api.click;
 
 public class ClickControllerTest {
 

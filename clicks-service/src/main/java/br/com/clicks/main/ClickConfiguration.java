@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @Configuration
 @EnableJpaRepositories(basePackages = {"br.com.clicks.domain"})
 @ComponentScan("br.com.clicks")
-@EntityScan("br.com.clicks.domain")   
+@EntityScan("br.com.clicks.domain")
 public class ClickConfiguration {
 
 	@Bean

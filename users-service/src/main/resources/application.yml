@@ -21,7 +21,9 @@ spring:
     level:
       org.springframework: WARN
       org.hibernate: WARN
-      
+  zipkin:
+    base-url: http://localhost:8701
+    
 eureka:  
   client:
     serviceUrl:

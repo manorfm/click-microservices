@@ -1,6 +1,7 @@
 package br.com.clicks.api.controller;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,8 @@ import br.com.commons.rest.services.AbstractController;
 @RequestMapping(value = "/clicks", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ClickController extends AbstractController<ClickResource> {
 
+	private static Logger log = Logger.getLogger(ClickController.class.getName());
+	
 	@Autowired
 	private UserController userController;
 	
@@ -36,10 +39,12 @@ public class ClickController extends AbstractController<ClickResource> {
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public ResponseEntity<?> save(@RequestBody ClickResource resource) {
 		try {
+			log.info(String.format("Saving click of user: %s", resource.getUserId()));
 			Click click = clickResourcesAssembler.convert(resource);
 			clickService.save(click);
 			return responseOk();
 		} catch (Exception e) {
+			log.severe(String.format("Error trying to saving click of user: %s", resource.getUserId()));
 			e.printStackTrace();
 			return responseError(HttpStatus.CONFLICT);
 		}
@@ -48,11 +53,13 @@ public class ClickController extends AbstractController<ClickResource> {
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public ResponseEntity<?> getAll() {
 		try {
+			log.info("get all clicks");
 			List<Click> clicks = clickService.findAll();
 			List<ClickResource> resources = clickResourcesAssembler.convert(clicks);
 			
 			return responseOk(resources);
 		} catch (Exception e) {
+			log.severe("get all clicks");
 			e.printStackTrace();
 			return responseError(HttpStatus.CONFLICT);
 		}
@@ -61,11 +68,13 @@ public class ClickController extends AbstractController<ClickResource> {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> get(@PathVariable Long id) {
 		try {
+			log.info(String.format("get click id: %d", id));
 			Click click = clickService.get(id);
 			User user = userController.getUser(click.getUserId());
 			ClickResource resource = clickResourcesAssembler.convert(click, user);
 			return responseOk(resource);
 		} catch (Exception e) {
+			log.severe(String.format("erro trying to get click with id: %d", id));
 			e.printStackTrace();
 			return responseError(HttpStatus.CONFLICT);
 		}

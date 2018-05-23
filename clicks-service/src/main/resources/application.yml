@@ -12,7 +12,7 @@ spring:
       ddl-auto: update
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost/click
+    url: jdbc:mysql:3307://localhost/click
     username: root
     password: root
   logging:
@@ -21,6 +21,8 @@ spring:
     level:
       org.springframework: WARN
       org.hibernate: WARN
+  zipkin:
+    base-url: http://localhost:8701
 
 eureka:  
   client:

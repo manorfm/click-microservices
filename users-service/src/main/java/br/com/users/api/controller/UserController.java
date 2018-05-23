@@ -2,6 +2,9 @@ package br.com.users.api.controller;
 
 import java.util.List;
 
+//import org.slf4j.Logger;
+import java.util.logging.Logger;
+// import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,10 +22,13 @@ import br.com.users.api.resources.UserResource;
 import br.com.users.domain.User;
 import br.com.users.domain.service.UserService;
 
+
 @RestController
 @RequestMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController extends AbstractController<UserResource> {
 
+	 private static Logger log = Logger.getLogger(UserController.class.getName());
+	 
 	@Autowired
 	private UserService userService;
 
@@ -31,6 +37,7 @@ public class UserController extends AbstractController<UserResource> {
 
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public ResponseEntity<?> save(@RequestBody UserResource resource) {
+		log.info(String.format("Saving user name's: %s", resource.getName()));
 		User user = userAssembler.convert(resource);
 		userService.save(user);
 
@@ -40,6 +47,7 @@ public class UserController extends AbstractController<UserResource> {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<?> getUser(@PathVariable Long id) {
+		log.info("Getting user id: " + id);
 		User user = userService.get(id);
 		UserResource resource = userAssembler.convert(user);
 		return response(resource, HttpStatus.OK);
@@ -47,6 +55,7 @@ public class UserController extends AbstractController<UserResource> {
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public ResponseEntity<?> getUsers() {
+		log.info("Getting all users");
 		List<User> users = userService.findAll();
 		List<UserResource> resources = userAssembler.convert(users);
 

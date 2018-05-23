@@ -1,14 +1,16 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>br.com.clicks</groupId>
-    <artifactId>clicks-microservices</artifactId>
-    <version>1.0.0</version>
-  </parent>
-  <artifactId>gateway-service</artifactId>
-  <description>To this small example, using zuul as gateway</description>
-  
-  <dependencies>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>br.com.clicks</groupId>
+		<artifactId>clicks-microservices</artifactId>
+		<version>1.0.0</version>
+	</parent>
+	<artifactId>gateway-service</artifactId>
+	<description>To this small example, using zuul as gateway</description>
+
+	<dependencies>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-eureka</artifactId>
@@ -31,12 +33,16 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-zipkin</artifactId>
+		</dependency>
+		<!-- <dependency>
+			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-sleuth</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-sleuth-zipkin</artifactId>
-		</dependency>
+		</dependency> -->
 	</dependencies>
 
 	<build>
@@ -46,7 +52,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<mainClass>pl.piomin.microservices.edge.Application</mainClass>
+					<mainClass>br.com.gateway.Application</mainClass>
 					<addResources>true</addResources>
 				</configuration>
 				<executions>
