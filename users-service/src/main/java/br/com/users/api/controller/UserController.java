@@ -67,8 +67,14 @@ public class UserController extends AbstractController<UserResource> {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> deleteUser(@PathVariable Long id) {
-		userService.remove(id);
-		return responseOk();
+		try {
+			log.info(String.format("Getting remove user#%d", id));
+			userService.remove(id);
+			return responseOk();
+		} catch (Exception e) {
+			log.severe(String.format("problem removing user#%d", id));
+			return notFound("404 - Not found user id: %d");
+		}
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
