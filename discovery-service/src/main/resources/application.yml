@@ -1,10 +1,9 @@
 server:  
-  port: ${PORT:8700}
+  port: ${PORT:8761}
     
 eureka:  
   instance:
-##hostname: localhost
-    hostname: discovery-service
+    hostname: @discovery_url@
   client:
     registerWithEureka: false
     fetchRegistry: false

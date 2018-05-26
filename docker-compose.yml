@@ -72,6 +72,7 @@ services:
   elasticsearch:
     image: elasticsearch
     container_name: elasticsearch
+    command: elasticsearch -Enetwork.host=_local_
     ports:
       - 9200:9200
       - 9300:9300
@@ -80,8 +81,6 @@ services:
     container_name: kibana
     ports:
       - 5601:5601
-    links:
-      - elasticsearch
     depends_on:
       - elasticsearch
   logstash:
@@ -90,6 +89,6 @@ services:
     ports:
       - 5000:5000
     environment:
-      - 'input { tcp { port => 5000 codec => "json" } } output { elasticsearch { hosts => ["172.17.0.3"] index => "micro-%{serviceName}"} }'
+      - 'input { tcp { port => 5000 codec => json } } output { elasticsearch { hosts => ["elasticsearch"] index => "micro-%{serviceName}"} }'
     depends_on:
       - kibana

@@ -12,7 +12,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.5.4.RELEASE</version>
-		<relativePath/>
+		<relativePath />
 	</parent>
 
 	<modules>
@@ -95,14 +95,50 @@
 				<version>2.0.0.0</version>
 				<scope>test</scope>
 			</dependency>
-			
+
 			<dependency>
-			    <groupId>mysql</groupId>
-			    <artifactId>mysql-connector-java</artifactId>
-			    <version>8.0.11</version>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>8.0.11</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<mysql_user_url>localhost</mysql_user_url>
+				<zepkin_url>localhost</zepkin_url>
+				<discovery_url>localhost</discovery_url>
+				<mysql_click_url>localhost</mysql_click_url>
+				<logstash_url>localhost</logstash_url>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>docker</id>
+			<properties>
+				<mysql_user_url>mysql_user</mysql_user_url>
+				<mysql_click_url>mysql_click</mysql_click_url>
+				<zepkin_url>zepkin</zepkin_url>
+				<discovery_url>discovery</discovery_url>
+				<logstash_url>logstash</logstash_url>
+			</properties>
+		</profile>
+	</profiles>
+	
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+	</build>
 
 	<repositories>
 		<repository>

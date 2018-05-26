@@ -12,8 +12,7 @@ spring:
       ddl-auto: update
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://mysql-clicks/click
-##url: jdbc:mysql:3307://localhost/click
+    url: jdbc:mysql://@mysql_click_url@/click
     username: root
     password: root
   logging:
@@ -23,15 +22,13 @@ spring:
       org.springframework: WARN
       org.hibernate: WARN
   zipkin:
-##base-url: http://localhost:8701
+    base-url: http://@zepkin_url@:8701
     enabled: true
-    base-url: http://zipkin-service:8701
 
 eureka:  
   client:
     serviceUrl:
-##defaultZone: ${DISCOVERY_URL:http://localhost:8700}/eureka/
-      defaultZone: ${DISCOVERY_URL:http://discovery-service:8700}/eureka/
+      defaultZone: ${DISCOVERY_URL:http://@discovery_url@:8761}/eureka/
   instance:
     leaseRenewalIntervalInSeconds: 1
     leaseExpirationDurationInSeconds: 2

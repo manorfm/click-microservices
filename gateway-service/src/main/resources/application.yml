@@ -1,6 +1,10 @@
 info:
   component: Edge Server
 
+spring:
+  application:
+    name: gateway-server
+
 endpoints:
   restart:
     enabled: true
@@ -18,7 +22,7 @@ zuul:
     clicks: 
       path: /clicks/**
       serviceId: click-service
-      
+
 hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 80000
 
 ribbon:
@@ -28,10 +32,9 @@ ribbon:
 eureka:
   client:
     serviceUrl:
-      defaultZone: ${DISCOVERY_URL:http://discovery-service:8700}/eureka/
-##defaultZone: http://localhost:8700/eureka/
+      defaultZone: ${DISCOVERY_URL:http://@discovery_url@:8761}/eureka/
     registerWithEureka: false
-      
+
 server:
   port: 8080
 
