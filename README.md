@@ -13,12 +13,21 @@ ELK (Elasticsearch, logstash e kibana), todos os serviços dockerizados e config
 ## Débito técnico:
   Adicionar o Kafka e um serviço como consumer apenas para tratar os $post da rota /clicks
 
+---
 <br>
 Pra rodar, é necessário baixar o projeto, executar o mvn package, pra baixar as dependências e construir os serviços e em seguida 
 fazer o docker-compose up -d --build
+<br>
+
+```
+git clone https://github.com/manorfm/click-microservices.git
+cd click-microservices 
+mvn install
+docker-compose up -d --build
+```
 
 <br>
-Após executar o docker-compose up -d --build vai estar disponível para acesso os seguintes serviços:
+Após executar os comandos vai estar disponível para acesso os seguintes serviços:
 
 # Monitoramento
 <ul>
@@ -46,8 +55,8 @@ e expôe as seguintes apis com protocolo rest (json):
   com body:
 ```javascript
     {
-      "pis": 132551,
-      "dateTime": "2018-04-18T08:15:50.485"
+      "userId": 132551,
+      "timer": "2018-04-18T08:15:50.485"
     }
 ```
 <br>
